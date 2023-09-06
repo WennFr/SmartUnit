@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LampDevice", "LampDevice\LampDevice.csproj", "{1D7539FF-5847-401A-8DE8-F4C8D09CA5F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{BDAEEF37-ED40-4EFC-9786-3C07680EBEFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1D7539FF-5847-401A-8DE8-F4C8D09CA5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D7539FF-5847-401A-8DE8-F4C8D09CA5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D7539FF-5847-401A-8DE8-F4C8D09CA5F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDAEEF37-ED40-4EFC-9786-3C07680EBEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDAEEF37-ED40-4EFC-9786-3C07680EBEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDAEEF37-ED40-4EFC-9786-3C07680EBEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDAEEF37-ED40-4EFC-9786-3C07680EBEFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
