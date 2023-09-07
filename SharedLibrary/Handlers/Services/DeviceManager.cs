@@ -8,15 +8,15 @@ using Newtonsoft.Json;
 
 namespace SharedLibrary.Handlers.Services
 {
-    public class DeviceManager<TDevice> where TDevice : class
+    public class DeviceManager<TDeviceData> where TDeviceData : class
     {
         public DeviceConfiguration Configuration { get; set; }
 
-        public TDevice Device { get; set; }
+        public TDeviceData DeviceData { get; set; }
 
-        public DeviceManager(string connectionString, TDevice device)
+        public DeviceManager(string connectionString, TDeviceData deviceData)
         {
-            Device = device;
+            DeviceData = deviceData;
             Configuration = new DeviceConfiguration(connectionString);
             Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null).Wait();
         }
@@ -56,13 +56,7 @@ namespace SharedLibrary.Handlers.Services
 
                 if (Configuration.AllowSending)
                 {
-                    var data = new   // Change to TelemetryData
-                    {
-                        Message = "Hejsan",
-                        Created = DateTime.Now,
-                    };
-
-                    await SendDataAsync(JsonConvert.SerializeObject(data));
+                    await SendDataAsync(JsonConvert.SerializeObject(DeviceData));
                     await Task.Delay(Configuration.TelemetryInterval);
 
                 }

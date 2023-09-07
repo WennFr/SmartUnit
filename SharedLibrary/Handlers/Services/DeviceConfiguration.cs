@@ -12,7 +12,7 @@ namespace SharedLibrary.Handlers.Services
         public DeviceConfiguration(string connectionString)
         {
             ConnectionString = connectionString;
-            //Initialize();
+            Initialize();
         }
 
         public string ConnectionString { get; private set; } = null!;
@@ -29,7 +29,7 @@ namespace SharedLibrary.Handlers.Services
 
             if (ConnectionString != null)
             {
-                //DeviceId = ConnectionString.Split(";")[1].Split("=")[1];
+                DeviceId = ConnectionString.Split(";")[1].Split("=")[1];
                 DeviceClient = DeviceClient.CreateFromConnectionString(ConnectionString, TransportType.Mqtt);
             }
         }
