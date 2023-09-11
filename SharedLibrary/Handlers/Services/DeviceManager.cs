@@ -100,6 +100,21 @@ namespace SharedLibrary.Handlers.Services
                     Configuration.AllowSending = false;
                     await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
                     return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response)), 200);
+
+                case "settelemetryinterval":
+
+                    int desiredInterval;
+                    if (int.TryParse(methodRequest.DataAsJson, out desiredInterval))
+                    {
+                        Configuration.TelemetryInterval = desiredInterval;
+
+                        await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "telemetryInterval", Configuration.TelemetryInterval);
+                        return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response)), 200);
+                    }
+
+                    break;
+
+
             }
 
             return new MethodResponse(400);
