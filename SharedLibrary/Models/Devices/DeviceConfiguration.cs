@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedLibrary.Handlers.Services
+namespace SharedLibrary.Models.Devices
 {
     public class DeviceConfiguration
     {

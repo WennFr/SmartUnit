@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LampDevice.Models
+namespace SharedLibrary.Models
 {
-    public class TelemetryDataModel
+    public class LampTelemetryDataModel
     {
         public bool IsLampOn { get; set; }
 
