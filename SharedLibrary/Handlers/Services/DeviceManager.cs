@@ -74,6 +74,8 @@ namespace SharedLibrary.Handlers.Services
                 await Configuration.DeviceClient.SendEventAsync(message);
                 Console.WriteLine($"Message sent at {DateTime.Now} with data {dataAsJson}");
 
+                await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "latestMessage", dataAsJson);
+
             }
 
         }
