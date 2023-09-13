@@ -15,10 +15,11 @@ namespace SharedLibrary.Handlers.Services
     {
         public DeviceConfiguration Configuration { get; set; }
 
+        public bool AllowSending() => Configuration.AllowSending;
 
-        public DeviceManager(string connectionString)
+        public DeviceManager(DeviceConfiguration config)
         {
-            Configuration = new DeviceConfiguration(connectionString);
+            Configuration = config;
             Task.WhenAll(Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null),
                 SetTelemetryIntervalAsync(), NetworkManager.CheckConnectivityAsync());
 

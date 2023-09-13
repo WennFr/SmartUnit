@@ -6,8 +6,10 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
+using SharedLibrary.Models.Devices;
 
 namespace Lamp_Device
 {
@@ -24,10 +26,16 @@ namespace Lamp_Device
         public App()
         {
             AppHost = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                })
                 .ConfigureServices((config, services) =>
                 {
                     services.AddSingleton<MainWindow>();
-                    services.AddSingleton(new DeviceManager("HostName=fw-kyh-iothb.azure-devices.net;DeviceId=lamp_device;SharedAccessKey=V+CuvgjqsYVonjXAPpLBZE8GsqIQVo5RMzHU97Cw3tM="));
+                    services.AddSingleton(new DeviceConfiguration(config.Configuration.GetConnectionString("LampDevice")!));
+                    services.AddSingleton<DeviceManager>();
+                    services.AddSingleton<NetworkManager>();
                 })
                 .Build();
 
