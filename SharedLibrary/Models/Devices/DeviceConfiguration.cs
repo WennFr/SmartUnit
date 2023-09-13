@@ -17,7 +17,7 @@ namespace SharedLibrary.Models.Devices
 
         public string ConnectionString { get; private set; } = null!;
         public DeviceClient DeviceClient { get; private set; } = null!;
-        public int TelemetryInterval { get; set; } = 60000;
+        public int TelemetryInterval { get; set; } = 5000;
         public bool AllowSending { get; set; } = true;
         public string DeviceId { get; private set; } = null!;
 

@@ -25,17 +25,6 @@ namespace SharedLibrary.Handlers.Services
         }
 
 
-        //public void Start()
-        //{
-        //    Task.WhenAll(
-        //        SetTelemetryIntervalAsync(),
-        //        NetworkManager.CheckConnectivityAsync(),
-        //        SendTelemetryAsync()
-        //    );
-
-        //}
-
-
         private async Task SetTelemetryIntervalAsync()
         {
 

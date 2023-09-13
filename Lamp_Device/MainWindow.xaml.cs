@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SharedLibrary.Handlers.Services;
+using SharedLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,43 @@ namespace Lamp_Device
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly DeviceManager _deviceManager;
+
+        public MainWindow(DeviceManager deviceManager)
         {
             InitializeComponent();
+            _deviceManager = deviceManager;
+            Task.FromResult(SendTelemetryDataAsync());
         }
+
+        private async Task SendTelemetryDataAsync()
+        {
+
+            while (true)
+            {
+                if (_deviceManager.Configuration.AllowSending)
+                {
+                    var payload = new LampTelemetryDataModel()
+                    {
+                        IsLampOn = true,
+                        TemperatureCelsius = 2000,
+                        CurrentTime = DateTime.Now
+                    };
+
+                    var json = JsonConvert.SerializeObject(payload);
+
+                    if (await _deviceManager.SendDataAsync(JsonConvert.SerializeObject(json)))
+                        CurrentMessageSent.Text = $"Message sent successfully: {json}";
+
+                    var telemetryInterval = _deviceManager.Configuration.TelemetryInterval; 
+
+                    await Task.Delay(telemetryInterval);
+                }
+            }
+
+        }
+
+
+
     }
 }

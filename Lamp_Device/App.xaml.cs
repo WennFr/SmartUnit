@@ -6,6 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using SharedLibrary.Handlers.Services;
 
 namespace Lamp_Device
 {
@@ -25,7 +27,7 @@ namespace Lamp_Device
                 .ConfigureServices((config, services) =>
                 {
                     services.AddSingleton<MainWindow>();
-                    services.AddSingleton(new DeviceManager("HostName=fw-kyh-iothb.azure-devices.net;DeviceId=wpf_device;SharedAccessKey=jrQL6oH1AXscyYKAtTx7MEXgpwpDxUKeWX2UBIiu22Y="));
+                    services.AddSingleton(new DeviceManager("HostName=fw-kyh-iothb.azure-devices.net;DeviceId=lamp_device;SharedAccessKey=V+CuvgjqsYVonjXAPpLBZE8GsqIQVo5RMzHU97Cw3tM="));
                 })
                 .Build();
 
