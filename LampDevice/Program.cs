@@ -48,25 +48,19 @@ namespace LampDevice
                 {
                     var payload = new LampTelemetryDataModel()
                     {
-                        IsLampOn = false,
-                        TemperatureCelsius = 0,
+                        IsLampOn = true,
+                        TemperatureCelsius = 2000,
                         CurrentTime = DateTime.Now
                     };
-
 
                     var json = JsonConvert.SerializeObject(payload);
 
                     if (await deviceManager.SendDataAsync(JsonConvert.SerializeObject(json)))
                         Console.WriteLine($"Message sent successfully: {json}");
 
-                    await Task.Delay(1000);
+                    await Task.Delay(deviceManager.Configuration.TelemetryInterval);
                 }
             }
-
-
-
-         
-
 
         }
 

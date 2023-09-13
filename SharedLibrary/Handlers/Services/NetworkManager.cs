@@ -23,12 +23,7 @@ namespace SharedLibrary.Handlers.Services
             }
         }
 
-        public static async Task<bool> CheckConnectedStateAsync()
-        {
-            return await SendPingAsync("8.8.8.8");
-        }
-
-
+        
         private static async Task<bool> SendPingAsync(string ipAddress)
         {
             try

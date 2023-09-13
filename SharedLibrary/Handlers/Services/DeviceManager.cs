@@ -19,19 +19,21 @@ namespace SharedLibrary.Handlers.Services
         public DeviceManager(string connectionString)
         {
             Configuration = new DeviceConfiguration(connectionString);
-            Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null).Wait();
-        }
-
-
-        public void Start()
-        {
-            Task.WhenAll(
-                SetTelemetryIntervalAsync(),
-                NetworkManager.CheckConnectivityAsync(),
-                SendTelemetryAsync()
-            );
+            Task.WhenAll(Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null),
+                SetTelemetryIntervalAsync(), NetworkManager.CheckConnectivityAsync());
 
         }
+
+
+        //public void Start()
+        //{
+        //    Task.WhenAll(
+        //        SetTelemetryIntervalAsync(),
+        //        NetworkManager.CheckConnectivityAsync(),
+        //        SendTelemetryAsync()
+        //    );
+
+        //}
 
 
         private async Task SetTelemetryIntervalAsync()
@@ -49,41 +51,6 @@ namespace SharedLibrary.Handlers.Services
                 Configuration.TelemetryInterval);
 
         }
-
-        private async Task SendTelemetryAsync()
-        {
-            while (true)
-            {
-
-                //if (Configuration.AllowSending)
-                //{
-                    //await SendDataAsync(JsonConvert.SerializeObject());
-                    //await Task.Delay(Configuration.TelemetryInterval);
-
-                //}
-
-            }
-
-
-
-        }
-
-        //public async Task SendDataAsync(string dataAsJson)
-        //{
-
-        //    if (!string.IsNullOrEmpty(dataAsJson))
-        //    {
-        //        var message = new Message(Encoding.UTF8.GetBytes(dataAsJson));
-        //        await Configuration.DeviceClient.SendEventAsync(message);
-
-        //        await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "latestMessage", dataAsJson);
-
-        //        Console.WriteLine($"Message sent at {DateTime.Now} with data {dataAsJson}");
-
-
-        //    }
-
-        //}
 
         public async Task<bool> SendDataAsync(string payload)
         {
@@ -103,50 +70,54 @@ namespace SharedLibrary.Handlers.Services
             return false;
         }
 
-
-
-
-        private async Task<MethodResponse> DirectMethodCallback(MethodRequest methodRequest, object userContext)
+        private async Task<MethodResponse> DirectMethodCallback(MethodRequest req, object userContext)
         {
 
-            var response = new
+            var res = new MethodDataResponse();
+
+            try
             {
-                message = $"Executed Direct Method: {methodRequest.Name}",
-            };
+                res.Message = $"Method: {req.Name} executed successfully.";
 
+                switch (req.Name.ToLower())
+                {
+                    case "start":
+                        Configuration.AllowSending = true;
+                        await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
+                        break;
 
-            switch (methodRequest.Name.ToLower())
-            {
-                case "start":
-                    Configuration.AllowSending = true;
+                    case "stop":
+                        Configuration.AllowSending = false;
+                        await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
+                        break;
 
-                    await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
+                    case "settelemetryinterval":
 
-                    return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response)), 200);
+                        int desiredInterval;
+                        if (int.TryParse(req.DataAsJson, out desiredInterval))
+                        {
+                            Configuration.TelemetryInterval = desiredInterval;
+                            await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "telemetryInterval", Configuration.TelemetryInterval);
+                        }
 
-                case "stop":
-                    Configuration.AllowSending = false;
-                    await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
+                        break;
 
-                    return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response)), 200);
+                    default:
+                        res.Message = $"Method: {req.Name} could not be found.";
+                        return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(res)), 404);
 
-                case "settelemetryinterval":
+                }
 
-                    int desiredInterval;
-                    if (int.TryParse(methodRequest.DataAsJson, out desiredInterval))
-                    {
-                        Configuration.TelemetryInterval = desiredInterval;
-
-                        await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "telemetryInterval", Configuration.TelemetryInterval);
-                        return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response)), 200);
-                    }
-
-                    break;
-
+                await Task.Delay(10);
+                return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(res)), 200);
 
             }
+            catch (Exception ex)
+            {
+                res.Message = $"Error: {ex.Message}";
+                return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(res)), 400);
 
-            return new MethodResponse(400);
+            }
         }
 
 
