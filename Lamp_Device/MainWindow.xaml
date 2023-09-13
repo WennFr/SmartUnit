@@ -8,5 +8,14 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TextBlock x:Name="CurrentMessageSent"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+
+
+        <TextBlock x:Name="ConnectivityStatus" Grid.Row="1" Text="Disconnected" HorizontalAlignment="Center" Margin="18 20" TextWrapping="Wrap"/>
+
+
+
     </Grid>
+
+
 </Window>

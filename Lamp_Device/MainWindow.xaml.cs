@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -25,12 +26,46 @@ namespace Lamp_Device
     {
         private readonly DeviceManager _deviceManager;
 
-        public MainWindow(DeviceManager deviceManager)
+        private readonly NetworkManager _networkManager;
+
+
+        public MainWindow(DeviceManager deviceManager, NetworkManager networkManager)
         {
             InitializeComponent();
             _deviceManager = deviceManager;
-            Task.FromResult(SendTelemetryDataAsync());
+            _networkManager = networkManager;
+            Task.WhenAll(SendTelemetryDataAsync(), CheckConnectivityAsync());
         }
+
+
+        private async Task ToggleFanStateAsync()
+        {
+            Storyboard fan = (Storyboard)this.FindResource("FanStoryboard");
+
+            while (true)
+            {
+
+                if (_deviceManager.AllowSending())
+                    fan.Begin();
+                else
+                    fan.Stop();
+
+                await Task.Delay(1000);
+            }
+        }
+
+        private async Task CheckConnectivityAsync()
+        {
+            while (true)
+            {
+                ConnectivityStatus.Text = await NetworkManager.CheckConnectivityAsync();
+            }
+        }
+
+
+
+
+
 
         private async Task SendTelemetryDataAsync()
         {

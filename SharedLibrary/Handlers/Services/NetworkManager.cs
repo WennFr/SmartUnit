@@ -11,19 +11,28 @@ namespace SharedLibrary.Handlers.Services
     {
         private static readonly Ping ping = new();
         private static bool isConnected = false;
-        private static int heartbeatInterval = 10000;
+        private static int heartbeatInterval = 1000;
 
-        public static async Task CheckConnectivityAsync()
+        //public static async Task CheckConnectivityAsync()
+        //{
+        //    while (true)
+        //    {
+        //        isConnected = await SendPingAsync("8.8.8.8");
+        //        Console.WriteLine(isConnected ? "Connected" : "Disconnected");
+        //        await Task.Delay(heartbeatInterval);
+        //    }
+        //}
+
+
+        public static async Task<string> CheckConnectivityAsync(string ipaddress = "8.8.8.8")
         {
-            while (true)
-            {
-                isConnected = await SendPingAsync("8.8.8.8");
-                Console.WriteLine(isConnected ? "Connected" : "Disconnected");
-                await Task.Delay(heartbeatInterval);
-            }
+
+            isConnected = await SendPingAsync(ipaddress);
+            Console.WriteLine(isConnected ? "Connected" : "Disconnected");
+            await Task.Delay(heartbeatInterval);
+            return isConnected ? "Connected" : "Disconnected";
         }
 
-        
         private static async Task<bool> SendPingAsync(string ipAddress)
         {
             try
@@ -34,6 +43,11 @@ namespace SharedLibrary.Handlers.Services
             }
             catch (Exception ex) { return false; }
         }
+
+
+    
+
+    
 
 
 
