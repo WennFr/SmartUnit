@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SharedLibrary.Models;
 using SharedLibrary.Models.Devices;
+using System.Diagnostics;
 
 namespace SharedLibrary.Handlers.Services
 {
@@ -14,11 +15,9 @@ namespace SharedLibrary.Handlers.Services
     {
         public DeviceConfiguration Configuration { get; set; }
 
-        public LampTelemetryDataModel LampData { get; set; }
 
-        public DeviceManager(string connectionString, LampTelemetryDataModel lampData)
+        public DeviceManager(string connectionString)
         {
-            LampData = lampData;
             Configuration = new DeviceConfiguration(connectionString);
             Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null).Wait();
         }
@@ -58,8 +57,8 @@ namespace SharedLibrary.Handlers.Services
 
                 //if (Configuration.AllowSending)
                 //{
-                    await SendDataAsync(JsonConvert.SerializeObject(LampData));
-                    await Task.Delay(Configuration.TelemetryInterval);
+                    //await SendDataAsync(JsonConvert.SerializeObject());
+                    //await Task.Delay(Configuration.TelemetryInterval);
 
                 //}
 
@@ -69,22 +68,42 @@ namespace SharedLibrary.Handlers.Services
 
         }
 
-        private async Task SendDataAsync(string dataAsJson)
+        //public async Task SendDataAsync(string dataAsJson)
+        //{
+
+        //    if (!string.IsNullOrEmpty(dataAsJson))
+        //    {
+        //        var message = new Message(Encoding.UTF8.GetBytes(dataAsJson));
+        //        await Configuration.DeviceClient.SendEventAsync(message);
+
+        //        await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "latestMessage", dataAsJson);
+
+        //        Console.WriteLine($"Message sent at {DateTime.Now} with data {dataAsJson}");
+
+
+        //    }
+
+        //}
+
+        public async Task<bool> SendDataAsync(string payload)
         {
-
-            if (!string.IsNullOrEmpty(dataAsJson))
+            try
             {
-                var message = new Message(Encoding.UTF8.GetBytes(dataAsJson));
+                var message = new Message(Encoding.UTF8.GetBytes(payload));
                 await Configuration.DeviceClient.SendEventAsync(message);
-
-                await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "latestMessage", dataAsJson);
-
-                Console.WriteLine($"Message sent at {DateTime.Now} with data {dataAsJson}");
-
-
+                await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "latestMessage", payload);
+                await Task.Delay(10);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
 
+            return false;
         }
+
+
 
 
         private async Task<MethodResponse> DirectMethodCallback(MethodRequest methodRequest, object userContext)
@@ -100,23 +119,14 @@ namespace SharedLibrary.Handlers.Services
             {
                 case "start":
                     Configuration.AllowSending = true;
-                    LampData.IsLampOn = true;
-                    LampData.TemperatureCelsius = 2000;
-                    LampData.CurrentTime = DateTime.Now;
 
                     await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
-                    await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "lampOn", LampData.IsLampOn);
 
                     return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response)), 200);
 
                 case "stop":
                     Configuration.AllowSending = false;
-                    LampData.IsLampOn = false;
-                    LampData.TemperatureCelsius = 0;
-                    LampData.CurrentTime = DateTime.Now;
-
                     await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
-                    await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "lampOn", LampData.IsLampOn);
 
                     return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response)), 200);
 
