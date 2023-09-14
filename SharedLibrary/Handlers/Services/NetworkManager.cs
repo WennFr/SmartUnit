@@ -13,16 +13,6 @@ namespace SharedLibrary.Handlers.Services
         private static bool isConnected = false;
         private static int heartbeatInterval = 1000;
 
-        //public static async Task CheckConnectivityAsync()
-        //{
-        //    while (true)
-        //    {
-        //        isConnected = await SendPingAsync("8.8.8.8");
-        //        Console.WriteLine(isConnected ? "Connected" : "Disconnected");
-        //        await Task.Delay(heartbeatInterval);
-        //    }
-        //}
-
 
         public static async Task<string> CheckConnectivityAsync(string ipaddress = "8.8.8.8")
         {
