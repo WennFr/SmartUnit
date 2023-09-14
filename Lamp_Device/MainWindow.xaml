@@ -15,12 +15,13 @@
         <Grid Grid.Row="0">
             <TextBlock x:Name="LampOnIcon" FontFamily="{StaticResource FontAwesome-Regular}" Text="&#xf672;" FontSize="120" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
             <TextBlock x:Name="LampOffIcon" FontFamily="{StaticResource FontAwesome-Solid}" Text="&#xf673;" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="80" Margin="0 -14 0 0" Visibility="Collapsed">
-               
+
             </TextBlock>
         </Grid>
 
         <TextBlock x:Name="CurrentMessageSent"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20" />
     </Grid>
 
+   
 
 </Window>
