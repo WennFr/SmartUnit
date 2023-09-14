@@ -34,21 +34,27 @@ namespace Lamp_Device
             InitializeComponent();
             _deviceManager = deviceManager;
             _networkManager = networkManager;
-            Task.WhenAll(SendTelemetryDataAsync(), CheckConnectivityAsync());
+            Task.WhenAll(SendTelemetryDataAsync(), CheckConnectivityAsync(), ToggleLampStateAsync());
         }
 
 
-        private async Task ToggleFanStateAsync()
+        private async Task ToggleLampStateAsync()
         {
-            Storyboard fan = (Storyboard)this.FindResource("FanStoryboard");
 
             while (true)
             {
 
                 if (_deviceManager.AllowSending())
-                    fan.Begin();
+                {
+                    LampOnIcon.Visibility = Visibility.Visible;
+                    LampOffIcon.Visibility = Visibility.Collapsed;
+                }
                 else
-                    fan.Stop();
+                {
+                    LampOnIcon.Visibility = Visibility.Collapsed;
+                    LampOffIcon.Visibility = Visibility.Visible;
+
+                }
 
                 await Task.Delay(1000);
             }
@@ -59,13 +65,10 @@ namespace Lamp_Device
             while (true)
             {
                 ConnectivityStatus.Text = await NetworkManager.CheckConnectivityAsync();
+                await Task.Delay(1000);
+
             }
         }
-
-
-
-
-
 
         private async Task SendTelemetryDataAsync()
         {

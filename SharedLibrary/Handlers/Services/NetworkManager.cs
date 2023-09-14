@@ -19,7 +19,6 @@ namespace SharedLibrary.Handlers.Services
 
             isConnected = await SendPingAsync(ipaddress);
             Console.WriteLine(isConnected ? "Connected" : "Disconnected");
-            await Task.Delay(heartbeatInterval);
             return isConnected ? "Connected" : "Disconnected";
         }
 
