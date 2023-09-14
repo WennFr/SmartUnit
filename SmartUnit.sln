@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "SharedLibr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{E90C014C-7D5B-4F2F-B465-CFA0B4C19983}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LampDevice", "LampDevice\LampDevice.csproj", "{9929173E-00E5-4D72-8DF4-53AEFC382EFF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lamp_Device", "Lamp_Device\Lamp_Device.csproj", "{6EBD18AA-E887-43EE-A3CC-6447A9B73EAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamp_Device", "Lamp_Device\Lamp_Device.csproj", "{6EBD18AA-E887-43EE-A3CC-6447A9B73EAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{E90C014C-7D5B-4F2F-B465-CFA0B4C19983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E90C014C-7D5B-4F2F-B465-CFA0B4C19983}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E90C014C-7D5B-4F2F-B465-CFA0B4C19983}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9929173E-00E5-4D72-8DF4-53AEFC382EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9929173E-00E5-4D72-8DF4-53AEFC382EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9929173E-00E5-4D72-8DF4-53AEFC382EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9929173E-00E5-4D72-8DF4-53AEFC382EFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6EBD18AA-E887-43EE-A3CC-6447A9B73EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6EBD18AA-E887-43EE-A3CC-6447A9B73EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EBD18AA-E887-43EE-A3CC-6447A9B73EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
