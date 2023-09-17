@@ -19,9 +19,6 @@ using System.Windows.Shapes;
 
 namespace Lamp_Device
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly DeviceManager _deviceManager;
@@ -70,6 +67,7 @@ namespace Lamp_Device
             }
         }
 
+
         private async Task SendTelemetryDataAsync()
         {
 
@@ -77,27 +75,36 @@ namespace Lamp_Device
             {
                 if (_deviceManager.Configuration.AllowSending)
                 {
-                    var payload = new LampTelemetryDataModel()
+                    var dataModel = new LampTelemetryDataModel()
                     {
                         IsLampOn = true,
                         TemperatureCelsius = 2000,
                         CurrentTime = DateTime.Now
                     };
 
-                    var json = JsonConvert.SerializeObject(payload);
 
-                    if (await _deviceManager.SendMessageAsync(JsonConvert.SerializeObject(json)))
-                        CurrentMessageSent.Text = $"Message sent successfully: {json}";
+                    var latestMessageJson = JsonConvert.SerializeObject(new
+                    {
+                        speed = dataModel.TemperatureCelsius,
+                        currentTime = dataModel.CurrentTime
+                    });
 
-                    var telemetryInterval = _deviceManager.Configuration.TelemetryInterval; 
+
+                    var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsLampOn);
+
+
+                    if (await _deviceManager.SendMessageAsync(latestMessageJson) &&
+                        await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
+                        CurrentMessageSent.Text =
+                            $"Message sent successfully: {latestMessageJson} DeviceOn: {operationalStatusJson}";
+
+                    var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;
 
                     await Task.Delay(telemetryInterval);
                 }
             }
 
         }
-
-
 
     }
 }
