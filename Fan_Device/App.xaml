@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Shared_Library;component/Resources/FontDictionary.xaml"/>
+                <!--<ResourceDictionary Source="pack://application:,,,/Shared_Library;component/Resources/FontDictionary.xaml"/>-->
                 <ResourceDictionary Source="Resources/FontDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

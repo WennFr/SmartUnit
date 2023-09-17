@@ -20,6 +20,9 @@ namespace SharedLibrary.Handlers.Services
         public DeviceManager(DeviceConfiguration config)
         {
             Configuration = config;
+            Configuration.AllowSending = true;
+            DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
+
             Task.WhenAll(Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null),
                 SetTelemetryIntervalAsync(), NetworkManager.CheckConnectivityAsync());
 
@@ -42,7 +45,7 @@ namespace SharedLibrary.Handlers.Services
 
         }
 
-        public async Task<bool> SendDataAsync(string payload)
+        public async Task<bool> SendMessageAsync(string payload)
         {
             try
             {
@@ -59,6 +62,29 @@ namespace SharedLibrary.Handlers.Services
 
             return false;
         }
+
+
+        public async Task<bool> SendOperationalStatusAsync(string payload)
+        {
+            try
+            {
+                var message = new Message(Encoding.UTF8.GetBytes(payload));
+                await Configuration.DeviceClient.SendEventAsync(message);
+                await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "deviceOn", payload);
+                await Task.Delay(10);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
+
+
+
+
 
         private async Task<MethodResponse> DirectMethodCallback(MethodRequest req, object userContext)
         {

@@ -86,7 +86,7 @@ namespace Lamp_Device
 
                     var json = JsonConvert.SerializeObject(payload);
 
-                    if (await _deviceManager.SendDataAsync(JsonConvert.SerializeObject(json)))
+                    if (await _deviceManager.SendMessageAsync(JsonConvert.SerializeObject(json)))
                         CurrentMessageSent.Text = $"Message sent successfully: {json}";
 
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval; 

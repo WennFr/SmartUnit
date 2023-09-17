@@ -20,33 +20,33 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\Fonts\fa-brands-400.ttf">
+    <Resource Include="Resources\Fonts\fa-brands-400.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-duotone-900.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-duotone-900.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-light-300.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-light-300.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-regular-400.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-regular-400.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-sharp-light-300.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-sharp-light-300.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-sharp-regular-400.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-sharp-regular-400.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-sharp-solid-900.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-sharp-solid-900.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-solid-900.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-solid-900.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Fonts\fa-thin-100.ttf">
+    </Resource>
+    <Resource Include="Resources\Fonts\fa-thin-100.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

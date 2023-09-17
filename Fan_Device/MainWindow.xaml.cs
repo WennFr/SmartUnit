@@ -67,17 +67,26 @@ namespace Fan_Device
             {
                 if (_deviceManager.Configuration.AllowSending)
                 {
-                    var payload = new FanTelemetryDataModel()
+                    var dataModel = new FanTelemetryDataModel()
                     {
                         IsFanOn = true,
                         Speed = "High",
                         CurrentTime = DateTime.Now
                     };
 
-                    var json = JsonConvert.SerializeObject(payload);
 
-                    if (await _deviceManager.SendDataAsync(JsonConvert.SerializeObject(json)))
-                        CurrentMessageSent.Text = $"Message sent successfully: {json}";
+                    var latestMessageJson = JsonConvert.SerializeObject(new
+                    {
+                        speed = dataModel.Speed,
+                        currentTime = dataModel.CurrentTime
+                    });
+
+
+                    var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsFanOn);
+
+
+                    if (await _deviceManager.SendMessageAsync(latestMessageJson) && await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
+                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson} DeviceOn: {operationalStatusJson}";
 
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;
 
