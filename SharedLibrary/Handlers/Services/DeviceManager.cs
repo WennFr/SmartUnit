@@ -20,10 +20,8 @@ namespace SharedLibrary.Handlers.Services
         public DeviceManager(DeviceConfiguration config)
         {
             Configuration = config;
-            Configuration.AllowSending = true;
-            DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
-
-            Task.WhenAll(Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null),
+            Task.WhenAll(DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending), 
+                Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null),
                 SetTelemetryIntervalAsync(), NetworkManager.CheckConnectivityAsync());
 
         }
