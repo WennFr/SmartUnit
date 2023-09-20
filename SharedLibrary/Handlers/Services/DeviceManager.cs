@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using SharedLibrary.Models;
 using SharedLibrary.Models.Devices;
 using System.Diagnostics;
+using Microsoft.Azure.Devices.Shared;
 
 namespace SharedLibrary.Handlers.Services
 {
@@ -20,11 +21,40 @@ namespace SharedLibrary.Handlers.Services
         public DeviceManager(DeviceConfiguration config)
         {
             Configuration = config;
-            Task.WhenAll(DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending), 
-                Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null),
+            Task.WhenAll(DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending),
+                Configuration.DeviceClient.SetMethodDefaultHandlerAsync(DirectMethodCallback, null), 
                 SetTelemetryIntervalAsync(), NetworkManager.CheckConnectivityAsync());
 
         }
+
+
+        public async Task SendDeviceTypeAsync(string deviceType)
+        {
+            try
+            {
+                var _deviceType = await DeviceTwinManager
+                    .GetDesiredTwinPropertyAsync(Configuration.DeviceClient, "deviceType");
+
+                if (_deviceType != null)
+                {
+                    await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "deviceType",
+                        _deviceType);
+                }
+
+                else
+                {
+                    await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "deviceType",
+                        deviceType);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating DeviceType: {ex.Message}");
+            }
+        }
+
+
 
 
         private async Task SetTelemetryIntervalAsync()

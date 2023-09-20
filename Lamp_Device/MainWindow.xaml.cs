@@ -31,7 +31,7 @@ namespace Lamp_Device
             InitializeComponent();
             _deviceManager = deviceManager;
             _networkManager = networkManager;
-            Task.WhenAll(SendTelemetryDataAsync(), CheckConnectivityAsync(), ToggleLampStateAsync());
+            Task.WhenAll(SetDeviceTypeAsync(), SendTelemetryDataAsync(), CheckConnectivityAsync(), ToggleLampStateAsync());
         }
 
 
@@ -67,6 +67,15 @@ namespace Lamp_Device
             }
         }
 
+        private async Task SetDeviceTypeAsync()
+        {
+            var deviceType = "Lamp";
+
+            await _deviceManager.SendDeviceTypeAsync(deviceType);
+        }
+
+
+
 
         private async Task SendTelemetryDataAsync()
         {
@@ -85,7 +94,7 @@ namespace Lamp_Device
 
                     var latestMessageJson = JsonConvert.SerializeObject(new
                     {
-                        speed = dataModel.TemperatureCelsius,
+                        TemperatureCelsius = dataModel.TemperatureCelsius,
                         currentTime = dataModel.CurrentTime
                     });
 
