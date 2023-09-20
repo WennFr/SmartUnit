@@ -98,6 +98,7 @@ namespace Lamp_Device
                         CurrentMessageSent.Text =
                             $"Message sent successfully: {latestMessageJson} DeviceOn: {operationalStatusJson}";
 
+
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;
 
                     await Task.Delay(telemetryInterval);
