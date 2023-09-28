@@ -126,11 +126,13 @@ namespace SharedLibrary.Handlers.Services
                 switch (req.Name.ToLower())
                 {
                     case "start":
+                        await SendOperationalStatusAsync(JsonConvert.SerializeObject("true"));
                         Configuration.AllowSending = true;
                         await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
                         break;
 
                     case "stop":
+                        await  SendOperationalStatusAsync(JsonConvert.SerializeObject("false"));
                         Configuration.AllowSending = false;
                         await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "allowSending", Configuration.AllowSending);
                         break;

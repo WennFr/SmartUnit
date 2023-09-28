@@ -56,7 +56,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
-    <ProjectReference Include="..\Shared_Library\Shared_Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>

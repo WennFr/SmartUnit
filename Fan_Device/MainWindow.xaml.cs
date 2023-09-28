@@ -30,7 +30,7 @@ namespace Fan_Device
             _deviceManager = deviceManager;
             InitializeComponent();
 
-            Task.WhenAll(ToggleFanStateAsync(), CheckConnectivityAsync(), SendTelemetryDataAsync());
+            Task.WhenAll(SetDeviceTypeAsync(),ToggleFanStateAsync(), CheckConnectivityAsync(), SendTelemetryDataAsync());
 
         }
 
@@ -59,6 +59,13 @@ namespace Fan_Device
             }
         }
 
+
+        private async Task SetDeviceTypeAsync()
+        {
+            var deviceType = "Fan";
+
+            await _deviceManager.SendDeviceTypeAsync(deviceType);
+        }
 
         private async Task SendTelemetryDataAsync()
         {
