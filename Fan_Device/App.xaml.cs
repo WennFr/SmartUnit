@@ -24,6 +24,9 @@ namespace Fan_Device
 
         public App()
         {
+
+            DeviceRegistrationSetup();
+
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration((context, config) =>
                 {
@@ -40,11 +43,37 @@ namespace Fan_Device
 
         }
 
+
+        private void DeviceRegistrationSetup()
+        {
+            var configurationBuilder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            
+            var root = configurationBuilder.Build();
+            var connectionString = root.GetConnectionString("FanDevice");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                var registrationManager = new RegistrationManager();
+                connectionString = registrationManager.RegisterDeviceAndGetConnectionString();
+
+                configurationBuilder = new ConfigurationBuilder();
+                root = configurationBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).Build();
+                var configSource = new Dictionary<string, string>
+                {
+                    { "ConnectionStrings:FanDevice", connectionString }
+                };
+                root = configurationBuilder.AddInMemoryCollection(configSource).Build();
+            }
+        }
+
+
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             await AppHost!.StartAsync();
 
-            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();  
+            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
 
             base.OnStartup(e);

@@ -50,17 +50,11 @@ namespace AzureFunctions.Services
         {
             try
             {
-                var device = await _registryManager.AddDeviceAsync(new Device());
+                var device = await _registryManager!.AddDeviceAsync(new Device(deviceId));
                 if (device != null)
-                {
                     return device;
-                }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                throw;
-            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
 
             return null!;
         }
