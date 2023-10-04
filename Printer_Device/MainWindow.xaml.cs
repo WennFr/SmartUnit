@@ -12,23 +12,23 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Lamp_Device
+namespace Printer_Device
 {
+
     public partial class MainWindow : Window
     {
         private readonly DeviceManager _deviceManager;
+        private readonly NetworkManager _networkManager;
 
-
-
-        public MainWindow(DeviceManager deviceManager)
+        public MainWindow(DeviceManager deviceManager, NetworkManager networkManager)
         {
             InitializeComponent();
             _deviceManager = deviceManager;
+            _networkManager = networkManager;
             Task.WhenAll(SetDeviceTypeAsync(), SendTelemetryDataAsync(), CheckConnectivityAsync(), ToggleLampStateAsync());
         }
 
@@ -67,7 +67,7 @@ namespace Lamp_Device
 
         private async Task SetDeviceTypeAsync()
         {
-            var deviceType = "Lamp";
+            var deviceType = "Printer";
 
             await _deviceManager.SendDeviceTypeAsync(deviceType);
         }
@@ -114,7 +114,6 @@ namespace Lamp_Device
                 }
             }
 
-        }
 
+        }
     }
-}

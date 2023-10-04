@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamp_Device", "Lamp_Device\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fan_Device", "Fan_Device\Fan_Device.csproj", "{A17BCE2D-E9EF-4476-9B51-F613A4A5A969}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printer_Device", "Printer_Device\Printer_Device.csproj", "{915C7AC0-C23E-4212-8481-F187D2E34F2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A17BCE2D-E9EF-4476-9B51-F613A4A5A969}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17BCE2D-E9EF-4476-9B51-F613A4A5A969}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A17BCE2D-E9EF-4476-9B51-F613A4A5A969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{915C7AC0-C23E-4212-8481-F187D2E34F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{915C7AC0-C23E-4212-8481-F187D2E34F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{915C7AC0-C23E-4212-8481-F187D2E34F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{915C7AC0-C23E-4212-8481-F187D2E34F2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
