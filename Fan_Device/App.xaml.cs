@@ -44,7 +44,7 @@ namespace Fan_Device
         }
 
 
-        private void DeviceRegistrationSetup()
+        private async void DeviceRegistrationSetup()
         {
             var configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -54,8 +54,11 @@ namespace Fan_Device
 
             if (string.IsNullOrEmpty(connectionString))
             {
+                var newDeviceId = "fan_device";
+                var deviceType = "fan";
+
                 var registrationManager = new RegistrationManager();
-                connectionString = registrationManager.RegisterDeviceAndGetConnectionString();
+                connectionString = await registrationManager.RegisterDevice(newDeviceId, deviceType);
 
                 configurationBuilder = new ConfigurationBuilder();
                 root = configurationBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).Build();
