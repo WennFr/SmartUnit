@@ -59,7 +59,7 @@ namespace AzureFunctions
                             await _fanContainer.CreateItemAsync(data, new PartitionKey(data.id));
                             break;
                         case "printer_data":
-                            data = JsonConvert.DeserializeObject<FanDataMessage>(json);
+                            data = JsonConvert.DeserializeObject<PrinterDataMessage>(json);
                             await _printerContainer.CreateItemAsync(data, new PartitionKey(data.id));
                             break;
                         default:

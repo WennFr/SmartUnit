@@ -65,15 +65,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\Fonts\fa-v4compatibility.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Resources\FontDictionary.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
+    <Resource Include="Resources\Fonts\fa-v4compatibility.ttf">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

@@ -28,11 +28,11 @@ namespace Printer_Device
             InitializeComponent();
             _deviceManager = deviceManager;
             Task.WhenAll(SetDeviceTypeAsync(), SendTelemetryDataAsync(), CheckConnectivityAsync(),
-                ToggleLampStateAsync());
+                TogglePrinterStateAsync());
         }
 
 
-        private async Task ToggleLampStateAsync()
+        private async Task TogglePrinterStateAsync()
         {
 
             while (true)
@@ -40,12 +40,12 @@ namespace Printer_Device
 
                 if (_deviceManager.AllowSending())
                 {
-                    PrinterOffIcon.Visibility = Visibility.Visible;
+                    PrinterOnIcon.Visibility = Visibility.Visible;
                     PrinterOffIcon.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    PrinterOffIcon.Visibility = Visibility.Collapsed;
+                    PrinterOnIcon.Visibility = Visibility.Collapsed;
                     PrinterOffIcon.Visibility = Visibility.Visible;
 
                 }
@@ -103,8 +103,7 @@ namespace Printer_Device
 
                     if (await _deviceManager.SendMessageAsync(latestMessageJson) &&
                         await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
-                        CurrentMessageSent.Text =
-                            $"Message sent successfully: {latestMessageJson} DeviceOn: {operationalStatusJson}";
+                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson}";
 
 
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;

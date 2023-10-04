@@ -50,13 +50,20 @@ namespace Printer_Device
 
         private async Task DeviceRegistrationSetup()
         {
-            var configurationBuilder = new ConfigurationBuilder()
+
+            var connectionString = string.Empty;
+            try
+            {
+                var configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
-            
 
-            var root = configurationBuilder.Build();
-            var connectionString = root.GetConnectionString("PrinterDevice")!;
+           
+                var root = configurationBuilder.Build();
+                connectionString = root.GetConnectionString("PrinterDevice");
+            }
+            catch (Exception e) { }
+            
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -73,13 +80,13 @@ namespace Printer_Device
                 );
 
 
-                // Get the relative file path for appsettings.json
                 var appSettingsPath = "../../../appsettings.json";
-
-                // Write the new configuration to appsettings.json
                 File.WriteAllText(appSettingsPath, newConfig.ToString(Formatting.Indented));
+                File.WriteAllText("appsettings.json", newConfig.ToString(Formatting.Indented));
+
+
             }
-            
+
         }
 
 
