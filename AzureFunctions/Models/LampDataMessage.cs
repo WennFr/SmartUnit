@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos;
 
-namespace SharedLibrary.Models
+namespace AzureFunctions.Models
 {
-    public class LampTelemetryDataModel
+    public class LampDataMessage
     {
-        public string ContainerName { get; set; } = "lamp_data";
-        public bool IsLampOn { get; set; }
 
+        public string id { get; set; } = Guid.NewGuid().ToString();
+        public bool DeviceOn { get; set; }
         public double TemperatureCelsius { get; set; }
-
         public DateTime CurrentTime { get; set; }
+
+
 
     }
 }

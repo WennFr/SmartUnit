@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedLibrary.Models
+namespace AzureFunctions.Models
 {
-    public class FanTelemetryDataModel
+    public class FanDataMessage
     {
-        public string ContainerName { get; set; } = "fan_data";
 
-        public bool IsFanOn { get; set; }
+        public string id { get; set; } = Guid.NewGuid().ToString();
+
+        public bool DeviceOn { get; set; }
 
         public string Speed { get; set; }
 

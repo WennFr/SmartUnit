@@ -85,7 +85,9 @@ namespace Fan_Device
                     var latestMessageJson = JsonConvert.SerializeObject(new
                     {
                         speed = dataModel.Speed,
-                        currentTime = dataModel.CurrentTime
+                        currentTime = dataModel.CurrentTime,
+                        DeviceOn = dataModel.IsFanOn,
+                        ContainerName = dataModel.ContainerName,
                     });
 
 

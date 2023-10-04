@@ -33,7 +33,7 @@ namespace Fan_Device
                 {
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton(new DeviceConfiguration(config.Configuration.GetConnectionString("FanDevice")!));
-                    services.AddSingleton<DeviceManager>();
+                    services.AddTransient<DeviceManager>();
                     services.AddSingleton<NetworkManager>();
                 })
                 .Build();

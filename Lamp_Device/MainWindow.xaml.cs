@@ -95,7 +95,9 @@ namespace Lamp_Device
                     var latestMessageJson = JsonConvert.SerializeObject(new
                     {
                         TemperatureCelsius = dataModel.TemperatureCelsius,
-                        currentTime = dataModel.CurrentTime
+                        CurrentTime = dataModel.CurrentTime,
+                        DeviceOn = dataModel.IsLampOn,
+                        ContainerName = dataModel.ContainerName,
                     });
 
 

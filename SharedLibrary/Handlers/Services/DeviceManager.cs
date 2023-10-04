@@ -97,7 +97,6 @@ namespace SharedLibrary.Handlers.Services
             try
             {
                 var message = new Message(Encoding.UTF8.GetBytes(payload));
-                await Configuration.DeviceClient.SendEventAsync(message);
                 await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "deviceOn", payload);
                 await Task.Delay(10);
                 return true;
@@ -144,6 +143,10 @@ namespace SharedLibrary.Handlers.Services
                         {
                             Configuration.TelemetryInterval = desiredInterval;
                             await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "telemetryInterval", Configuration.TelemetryInterval);
+
+                            res.Payload = desiredInterval.ToString();
+
+                            return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(res)), 200);
                         }
 
                         break;
