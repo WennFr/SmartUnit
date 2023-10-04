@@ -65,7 +65,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Fonts\fa-v4compatibility.ttf" />
+    <Content Include="Resources\Fonts\fa-v4compatibility.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

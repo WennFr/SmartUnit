@@ -36,7 +36,7 @@ namespace AzureFunctions.Actions
                     }
                 }
 
-                return GenerateHttpResponse(req, HttpStatusCode.BadRequest, "An error occured! Connectionstring was not created.");
+                return GenerateHttpResponse(req, HttpStatusCode.BadRequest, "An error occured! Parameter deviceId is required.");
             }
 
             return null!;
@@ -49,8 +49,7 @@ namespace AzureFunctions.Actions
 
             var response = req.CreateResponse(statusCode);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-
-            response.WriteString("Welcome to Azure Functions!");
+            response.WriteString(content);
 
             return response;
         }

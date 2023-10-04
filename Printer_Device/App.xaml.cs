@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
 using SharedLibrary.Models.Devices;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Printer_Device
 {
@@ -21,8 +25,13 @@ namespace Printer_Device
 
         public App()
         {
+            InitializeApp().GetAwaiter().GetResult();
+        }
 
-            DeviceRegistrationSetup();
+
+        private async Task InitializeApp()
+        {
+            await DeviceRegistrationSetup();
 
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration((context, config) =>
@@ -37,34 +46,40 @@ namespace Printer_Device
                     services.AddSingleton<NetworkManager>();
                 })
                 .Build();
-
         }
 
-
-        private async void DeviceRegistrationSetup()
+        private async Task DeviceRegistrationSetup()
         {
             var configurationBuilder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+            
 
             var root = configurationBuilder.Build();
-            var connectionString = root.GetConnectionString("FanDevice");
+            var connectionString = root.GetConnectionString("PrinterDevice")!;
 
             if (string.IsNullOrEmpty(connectionString))
             {
                 var newDeviceId = "printer_device";
-                var deviceType = "printer";
+                var deviceType = "Printer";
 
                 var registrationManager = new RegistrationManager();
                 connectionString = await registrationManager.RegisterDevice(newDeviceId, deviceType);
 
-                configurationBuilder = new ConfigurationBuilder();
-                root = configurationBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).Build();
-                var configSource = new Dictionary<string, string>
-                {
-                    { "ConnectionStrings:FanDevice", connectionString }
-                };
-                root = configurationBuilder.AddInMemoryCollection(configSource).Build();
+                var newConfig = new JObject(
+                    new JProperty("ConnectionStrings", new JObject(
+                        new JProperty("PrinterDevice", connectionString)
+                    ))
+                );
+
+
+                // Get the relative file path for appsettings.json
+                var appSettingsPath = "../../../appsettings.json";
+
+                // Write the new configuration to appsettings.json
+                File.WriteAllText(appSettingsPath, newConfig.ToString(Formatting.Indented));
             }
+            
         }
 
 

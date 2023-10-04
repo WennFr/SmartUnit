@@ -16,6 +16,7 @@ namespace AzureFunctions
         private readonly CosmosClient _cosmosClient;
         private readonly Container _lampContainer;
         private readonly Container _fanContainer;
+        private readonly Container _printerContainer;
 
         public SaveDataToCosmosDb(ILogger<SaveDataToCosmosDb> logger)
         {
@@ -27,12 +28,13 @@ namespace AzureFunctions
             var database = _cosmosClient.GetDatabase("IoTDb");
             _lampContainer = database.GetContainer("lamp_data");
             _fanContainer = database.GetContainer("fan_data");
+            _printerContainer = database.GetContainer("printer_data");
 
         }
 
         [Function(nameof(SaveDataToCosmosDb))]
         public async Task Run(
-            [EventHubTrigger("iothub-ehub-fw-kyh-iot-25230154-a6ffc95e22", ConsumerGroup = "cosmos",Connection = "IotHubEndpoint")] EventData[] events)
+            [EventHubTrigger("iothub-ehub-fw-kyh-iot-25230154-a6ffc95e22", ConsumerGroup = "cosmos", Connection = "IotHubEndpoint")] EventData[] events)
         {
             foreach (EventData @event in events)
             {
@@ -56,13 +58,17 @@ namespace AzureFunctions
                             data = JsonConvert.DeserializeObject<FanDataMessage>(json);
                             await _fanContainer.CreateItemAsync(data, new PartitionKey(data.id));
                             break;
+                        case "printer_data":
+                            data = JsonConvert.DeserializeObject<FanDataMessage>(json);
+                            await _printerContainer.CreateItemAsync(data, new PartitionKey(data.id));
+                            break;
                         default:
                             _logger.LogWarning($"Unsupported container: {container.ContainerName}");
                             break;
                     }
 
 
-                    
+
                     _logger.LogInformation($"Saved Message: {data}");
                 }
                 catch (Exception ex)

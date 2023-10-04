@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedLibrary.Models
+namespace SharedLibrary.Models.TelemetryDataModels
 {
     public class FanTelemetryDataModel
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SharedLibrary.Handlers.Services;
-using SharedLibrary.Models;
+using SharedLibrary.Models.TelemetryDataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

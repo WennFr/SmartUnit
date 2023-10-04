@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SharedLibrary.Handlers.Services;
-using SharedLibrary.Models;
+using SharedLibrary.Models.TelemetryDataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +22,13 @@ namespace Printer_Device
     public partial class MainWindow : Window
     {
         private readonly DeviceManager _deviceManager;
-        private readonly NetworkManager _networkManager;
 
-        public MainWindow(DeviceManager deviceManager, NetworkManager networkManager)
+        public MainWindow(DeviceManager deviceManager)
         {
             InitializeComponent();
             _deviceManager = deviceManager;
-            _networkManager = networkManager;
-            Task.WhenAll(SetDeviceTypeAsync(), SendTelemetryDataAsync(), CheckConnectivityAsync(), ToggleLampStateAsync());
+            Task.WhenAll(SetDeviceTypeAsync(), SendTelemetryDataAsync(), CheckConnectivityAsync(),
+                ToggleLampStateAsync());
         }
 
 
@@ -41,13 +40,13 @@ namespace Printer_Device
 
                 if (_deviceManager.AllowSending())
                 {
-                    LampOnIcon.Visibility = Visibility.Visible;
-                    LampOffIcon.Visibility = Visibility.Collapsed;
+                    PrinterOffIcon.Visibility = Visibility.Visible;
+                    PrinterOffIcon.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    LampOnIcon.Visibility = Visibility.Collapsed;
-                    LampOffIcon.Visibility = Visibility.Visible;
+                    PrinterOffIcon.Visibility = Visibility.Collapsed;
+                    PrinterOffIcon.Visibility = Visibility.Visible;
 
                 }
 
@@ -82,24 +81,24 @@ namespace Printer_Device
             {
                 if (_deviceManager.Configuration.AllowSending)
                 {
-                    var dataModel = new LampTelemetryDataModel()
+                    var dataModel = new PrinterTelemetryDataModel()
                     {
-                        IsLampOn = true,
-                        TemperatureCelsius = 2000,
+                        IsPrinterOn = true,
+                        HasPaper = true,
                         CurrentTime = DateTime.Now
                     };
 
 
                     var latestMessageJson = JsonConvert.SerializeObject(new
                     {
-                        TemperatureCelsius = dataModel.TemperatureCelsius,
+                        HasPaper = dataModel.HasPaper,
                         CurrentTime = dataModel.CurrentTime,
-                        DeviceOn = dataModel.IsLampOn,
+                        DeviceOn = dataModel.IsPrinterOn,
                         ContainerName = dataModel.ContainerName,
                     });
 
 
-                    var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsLampOn);
+                    var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsPrinterOn);
 
 
                     if (await _deviceManager.SendMessageAsync(latestMessageJson) &&
@@ -117,3 +116,4 @@ namespace Printer_Device
 
         }
     }
+}

@@ -63,7 +63,7 @@ namespace AzureFunctions.Services
         {
             try
             {
-                return $"{_connectionString.Split(";")[0]};DeviceId={device.Id};SharedAcessKey={device.Authentication.SymmetricKey.PrimaryKey}";
+                return $"{_connectionString.Split(";")[0]};DeviceId={device.Id};SharedAccessKey={device.Authentication.SymmetricKey.PrimaryKey}";
             }
             catch (Exception e)
             {
