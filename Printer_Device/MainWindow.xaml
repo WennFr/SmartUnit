@@ -14,7 +14,7 @@
 
         <Grid Grid.Row="0">
             <TextBlock x:Name="PrinterOnIcon" FontFamily="{StaticResource FontAwesome-Light}" Text="&#xf02f;" FontSize="120" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
-            <TextBlock x:Name="PrinterOffIcon" FontFamily="{StaticResource FontAwesome-Solid}" Text="&#xf686;" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="80" Margin="0 -14 0 0" Visibility="Collapsed">
+            <TextBlock x:Name="PrinterOffIcon" FontFamily="{StaticResource FontAwesome-Light}" Text="&#xf686;" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="80" Margin="0 -14 0 0" Visibility="Collapsed">
 
             </TextBlock>
         </Grid>
