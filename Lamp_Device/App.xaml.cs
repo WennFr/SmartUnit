@@ -3,13 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using SharedLibrary.Handlers.Services;
 using SharedLibrary.Models.Devices;
+using Newtonsoft.Json.Linq;
 
 namespace Lamp_Device
 {
@@ -25,6 +28,14 @@ namespace Lamp_Device
 
         public App()
         {
+            InitializeApp().GetAwaiter().GetResult();
+        }
+
+
+        private async Task InitializeApp()
+        {
+            await DeviceRegistrationSetup();
+
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration((context, config) =>
                 {
@@ -38,8 +49,52 @@ namespace Lamp_Device
                     services.AddSingleton<NetworkManager>();
                 })
                 .Build();
+        }
+
+
+        private async Task DeviceRegistrationSetup()
+        {
+
+            var connectionString = string.Empty;
+            try
+            {
+                var configurationBuilder = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddEnvironmentVariables();
+
+
+                var root = configurationBuilder.Build();
+                connectionString = root.GetConnectionString("LampDevice");
+            }
+            catch (Exception e) { }
+
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                var newDeviceId = "lamp_device";
+                var deviceType = "Lamp";
+
+                var registrationManager = new RegistrationManager();
+                connectionString = await registrationManager.RegisterDevice(newDeviceId, deviceType);
+
+                var newConfig = new JObject(
+                    new JProperty("ConnectionStrings", new JObject(
+                        new JProperty("LampDevice", connectionString)
+                    ))
+                );
+
+
+                var appSettingsPath = "../../../appsettings.json";
+                File.WriteAllText(appSettingsPath, newConfig.ToString(Formatting.Indented));
+                File.WriteAllText("appsettings.json", newConfig.ToString(Formatting.Indented));
+
+
+            }
 
         }
+
+
+
 
         protected override async void OnStartup(StartupEventArgs e)
         {
