@@ -108,14 +108,14 @@ namespace Printer_Device
 
                     var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsPrinterOn);
 
-                    var locationJson = JsonConvert.SerializeObject(dataModel.Location);
+                    var locationString = dataModel.Location;
 
 
                     if (await _deviceManager.SendLatestMessageAsync(latestMessageJson) &&
                         await _deviceManager.SendOperationalStatusAsync(operationalStatusJson) &&
-                        await _deviceManager.SendLocationAsync(locationJson) &&
+                        await _deviceManager.SendLocationAsync(locationString) &&
                         await _deviceManager.SendDataToCosmosDbAsync(telemetryDataJson))
-                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson}, DeviceOn: {operationalStatusJson}, Location: {locationJson}";
+                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson}, DeviceOn: {operationalStatusJson}, Location: {locationString}";
 
 
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;
