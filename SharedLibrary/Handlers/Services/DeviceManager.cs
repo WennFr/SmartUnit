@@ -73,7 +73,7 @@ namespace SharedLibrary.Handlers.Services
 
         }
 
-        public async Task<bool> SendMessageAsync(string payload)
+        public async Task<bool> SendLatestMessageAsync(string payload)
         {
             try
             {

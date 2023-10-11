@@ -94,7 +94,7 @@ namespace Fan_Device
                     var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsFanOn);
 
 
-                    if (await _deviceManager.SendMessageAsync(latestMessageJson) && await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
+                    if (await _deviceManager.SendLatestMessageAsync(latestMessageJson) && await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
                         CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson} DeviceOn: {operationalStatusJson}";
 
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;

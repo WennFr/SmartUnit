@@ -103,7 +103,7 @@ namespace Lamp_Device
                     var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsLampOn);
 
 
-                    if (await _deviceManager.SendMessageAsync(latestMessageJson) &&
+                    if (await _deviceManager.SendLatestMessageAsync(latestMessageJson) &&
                         await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
                         CurrentMessageSent.Text =
                             $"Message sent successfully: {latestMessageJson} DeviceOn: {operationalStatusJson}";
