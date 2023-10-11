@@ -85,25 +85,37 @@ namespace Printer_Device
                     {
                         IsPrinterOn = true,
                         HasPaper = true,
+                        Location = "Office",
                         CurrentTime = DateTime.Now
                     };
 
+
+                    var telemetryDataJson = JsonConvert.SerializeObject(new
+                    {
+                        DeviceOn = dataModel.IsPrinterOn,
+                        HasPaper = dataModel.HasPaper,
+                        Location = dataModel.Location,
+                        CurrentTime = dataModel.CurrentTime,
+                        ContainerName = dataModel.ContainerName,
+                    });
 
                     var latestMessageJson = JsonConvert.SerializeObject(new
                     {
                         HasPaper = dataModel.HasPaper,
                         CurrentTime = dataModel.CurrentTime,
-                        DeviceOn = dataModel.IsPrinterOn,
-                        ContainerName = dataModel.ContainerName,
                     });
 
 
                     var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsPrinterOn);
 
+                    var locationJson = JsonConvert.SerializeObject(dataModel.Location);
+
 
                     if (await _deviceManager.SendLatestMessageAsync(latestMessageJson) &&
-                        await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
-                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson}";
+                        await _deviceManager.SendOperationalStatusAsync(operationalStatusJson) &&
+                        await _deviceManager.SendLocationAsync(locationJson) &&
+                        await _deviceManager.SendDataToCosmosDbAsync(telemetryDataJson))
+                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson}, DeviceOn: {operationalStatusJson}, Location: {locationJson}";
 
 
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;

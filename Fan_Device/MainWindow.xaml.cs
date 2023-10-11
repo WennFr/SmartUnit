@@ -83,17 +83,17 @@ namespace Fan_Device
 
                     var telemetryDataJson = JsonConvert.SerializeObject(new
                     {
-                        speed = dataModel.Speed,
-                        currentTime = dataModel.CurrentTime,
                         DeviceOn = dataModel.IsFanOn,
+                        Speed = dataModel.Speed,
                         Location = dataModel.Location,
+                        CurrentTime = dataModel.CurrentTime,
                         ContainerName = dataModel.ContainerName,
                     });
 
                     var latestMessageJson = JsonConvert.SerializeObject(new
                     {
-                        speed = dataModel.Speed,
-                        currentTime = dataModel.CurrentTime,
+                        Speed = dataModel.Speed,
+                        CurrentTime = dataModel.CurrentTime,
                     });
 
                     var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsFanOn);
@@ -103,7 +103,7 @@ namespace Fan_Device
 
                     if (await _deviceManager.SendLatestMessageAsync(latestMessageJson) && 
                         await _deviceManager.SendOperationalStatusAsync(operationalStatusJson) && 
-                        await _deviceManager.SendLocationStatusAsync(locationJson) && 
+                        await _deviceManager.SendLocationAsync(locationJson) && 
                         await _deviceManager.SendDataToCosmosDbAsync(telemetryDataJson))
                         CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson}, DeviceOn: {operationalStatusJson}, Location: {locationJson}";
 

@@ -127,7 +127,7 @@ namespace SharedLibrary.Handlers.Services
             return false;
         }
 
-        public async Task<bool> SendLocationStatusAsync(string payload)
+        public async Task<bool> SendLocationAsync(string payload)
         {
             try
             {
