@@ -19,9 +19,7 @@ using System.Windows.Shapes;
 
 namespace Fan_Device
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+  
     public partial class MainWindow : Window
     {
         private readonly DeviceManager _deviceManager;
@@ -78,24 +76,36 @@ namespace Fan_Device
                     {
                         IsFanOn = true,
                         Speed = "High",
+                        Location = "Bedroom",
                         CurrentTime = DateTime.Now
                     };
 
+
+                    var telemetryDataJson = JsonConvert.SerializeObject(new
+                    {
+                        speed = dataModel.Speed,
+                        currentTime = dataModel.CurrentTime,
+                        DeviceOn = dataModel.IsFanOn,
+                        Location = dataModel.Location,
+                        ContainerName = dataModel.ContainerName,
+                    });
 
                     var latestMessageJson = JsonConvert.SerializeObject(new
                     {
                         speed = dataModel.Speed,
                         currentTime = dataModel.CurrentTime,
-                        DeviceOn = dataModel.IsFanOn,
-                        ContainerName = dataModel.ContainerName,
                     });
-
 
                     var operationalStatusJson = JsonConvert.SerializeObject(dataModel.IsFanOn);
 
+                    var locationJson = JsonConvert.SerializeObject(dataModel.Location);
 
-                    if (await _deviceManager.SendLatestMessageAsync(latestMessageJson) && await _deviceManager.SendOperationalStatusAsync(operationalStatusJson))
-                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson} DeviceOn: {operationalStatusJson}";
+
+                    if (await _deviceManager.SendLatestMessageAsync(latestMessageJson) && 
+                        await _deviceManager.SendOperationalStatusAsync(operationalStatusJson) && 
+                        await _deviceManager.SendLocationStatusAsync(locationJson) && 
+                        await _deviceManager.SendDataToCosmosDbAsync(telemetryDataJson))
+                        CurrentMessageSent.Text = $"Message sent successfully: {latestMessageJson}, DeviceOn: {operationalStatusJson}, Location: {locationJson}";
 
                     var telemetryInterval = _deviceManager.Configuration.TelemetryInterval;
 

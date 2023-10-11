@@ -50,16 +50,16 @@ namespace AzureFunctions
                     switch (container.ContainerName)
                     {
                         case "lamp_data":
-                            data = JsonConvert.DeserializeObject<LampDataMessage>(json);
+                            data = JsonConvert.DeserializeObject<LampDataMessage>(json)!;
                             await _lampContainer.CreateItemAsync(data, new PartitionKey(data.id));
                             break;
 
                         case "fan_data":
-                            data = JsonConvert.DeserializeObject<FanDataMessage>(json);
+                            data = JsonConvert.DeserializeObject<FanDataMessage>(json)!;
                             await _fanContainer.CreateItemAsync(data, new PartitionKey(data.id));
                             break;
                         case "printer_data":
-                            data = JsonConvert.DeserializeObject<PrinterDataMessage>(json);
+                            data = JsonConvert.DeserializeObject<PrinterDataMessage>(json)!;
                             await _printerContainer.CreateItemAsync(data, new PartitionKey(data.id));
                             break;
                         default:

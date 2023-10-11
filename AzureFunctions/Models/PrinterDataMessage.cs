@@ -11,6 +11,7 @@ namespace AzureFunctions.Models
         public string id { get; set; } = Guid.NewGuid().ToString();
         public bool DeviceOn { get; set; }
         public bool HasPaper { get; set; }
+        public string Location { get; set; } 
         public DateTime CurrentTime { get; set; }
     }
 }

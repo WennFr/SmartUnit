@@ -78,7 +78,6 @@ namespace SharedLibrary.Handlers.Services
             try
             {
                 var message = new Message(Encoding.UTF8.GetBytes(payload));
-                await Configuration.DeviceClient.SendEventAsync(message);
                 await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "latestMessage", payload);
                 await Task.Delay(10);
                 return true;
@@ -90,6 +89,25 @@ namespace SharedLibrary.Handlers.Services
 
             return false;
         }
+
+        public async Task<bool> SendDataToCosmosDbAsync(string payload)
+        {
+            try
+            {
+                var data = new Message(Encoding.UTF8.GetBytes(payload));
+                await Configuration.DeviceClient.SendEventAsync(data);
+                await Task.Delay(10);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
+
+
 
 
         public async Task<bool> SendOperationalStatusAsync(string payload)
@@ -109,7 +127,22 @@ namespace SharedLibrary.Handlers.Services
             return false;
         }
 
+        public async Task<bool> SendLocationStatusAsync(string payload)
+        {
+            try
+            {
+                var message = new Message(Encoding.UTF8.GetBytes(payload));
+                await DeviceTwinManager.UpdateReportedTwinPropertyAsync(Configuration.DeviceClient, "location", payload);
+                await Task.Delay(10);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
+            return false;
+        }
 
 
 

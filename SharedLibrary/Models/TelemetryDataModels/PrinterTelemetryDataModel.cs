@@ -14,6 +14,8 @@ namespace SharedLibrary.Models.TelemetryDataModels
 
         public bool HasPaper { get; set; }
 
+        public string Location { get; set; }
+
         public DateTime CurrentTime { get; set; }
 
     }

@@ -15,6 +15,8 @@ namespace AzureFunctions.Models
 
         public string Speed { get; set; }
 
+        public string Location { get; set; }
+
         public DateTime CurrentTime { get; set; }
     }
 }
