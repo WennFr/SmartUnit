@@ -59,12 +59,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\Fonts\fa-v4compatibility.ttf">
       <CopyToOutputDirectory></CopyToOutputDirectory>
     </Resource>

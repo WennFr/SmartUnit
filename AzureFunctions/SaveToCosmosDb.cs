@@ -22,9 +22,7 @@ namespace AzureFunctions
         {
             _logger = logger;
 
-            _cosmosClient =
-                new CosmosClient(
-                    "AccountEndpoint=https://fw-kyh-cosmosdb.documents.azure.com:443/;AccountKey=15f3YMnW2rduBKyK7z8v1WaNLq8TkjzqooyIyJ3B5eceah4nD9Rh3THHCZKD6lb592fP1BAysUx3ACDbSsOuxQ==;");
+            _cosmosClient = new CosmosClient("AccountEndpoint=https://fw-kyh-cosmosdb.documents.azure.com:443/;AccountKey=15f3YMnW2rduBKyK7z8v1WaNLq8TkjzqooyIyJ3B5eceah4nD9Rh3THHCZKD6lb592fP1BAysUx3ACDbSsOuxQ==;");
             var database = _cosmosClient.GetDatabase("IoTDb");
             _lampContainer = database.GetContainer("lamp_data");
             _fanContainer = database.GetContainer("fan_data");
