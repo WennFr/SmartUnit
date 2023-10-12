@@ -22,7 +22,7 @@ namespace SharedLibrary.Handlers.Services
                 var result = await httpClient.PostAsync($"https://fw-smart-af.azurewebsites.net/api/DeviceRegistration?deviceId={deviceId}&code=pfwA54Y0hVDgQ_XJpOJLsiGDOnKykwXwEYg4SyZk1aUbAzFuyXhLGw==", null!);
                 _connectionString = await result.Content.ReadAsStringAsync();
 
-                deviceClient = DeviceClient.CreateFromConnectionString(_connectionString, TransportType.Mqtt);
+                deviceClient = DeviceClient.CreateFromConnectionString(_connectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
 
                 var twinCollection = new TwinCollection();
                 twinCollection["deviceType"] = $"{deviceType}";
